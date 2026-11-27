@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой сайт</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ========================================== -->
+<!-- БУРГЕР-МЕНЮ (для мобильных)                -->
+<!-- ========================================== -->
+<input type="checkbox" id="burger-toggle" class="burger-toggle">
+<label for="burger-toggle" class="burger-label">☰ Меню</label>
+
+<!-- ========================================== -->
+<!-- НАВИГАЦИЯ С КНОПКОЙ ВОЙТИ                  -->
+<!-- ========================================== -->
+<nav class="main-nav">
+    <ul class="nav-list">
+        <li><a href="index.html">🏠 Главная</a></li>
+        <li><a href="games.html">🎮 Игры</a></li>
+        <li><a href="contacts.html">📞 Контакты</a></li>
+    </ul>
+    <!-- Кнопка "Войти" (показывается, если не авторизован) -->
+    <button id="login-btn" class="login-btn">🔐 Войти</button>
+    <!-- Профиль пользователя (показывается, если авторизован) -->
+    <div id="user-menu" class="user-menu" style="display: none;">
+        <span id="user-display-name" class="user-name">Пользователь</span>
+        <button id="logout-btn" class="logout-btn-small">Выйти</button>
+    </div>
+</nav>
+
+<!-- ========================================== -->
+<!-- ОСНОВНОЙ КОНТЕНТ                           -->
+<!-- ========================================== -->
+<h1>Моя любимая игра</h1>
+<p>
+    <strong>VALORANT</strong> — многопользовательская компьютерная игра в жанре тактического шутера
+    от первого лица, разработанная и издаваемая компанией Riot Games.
+</p>
+<p>
+    <img src="https://avatars.mds.yandex.net/i?id=29fa975f0f4ab100b08aaca5cf620b12_l-5916170-images-thumbs&n=13"
+         alt="Valorant" width="350">
+</p>
+
+<!-- ========================================== -->
+<!-- КАРТОЧКИ ИГР                               -->
+<!-- ========================================== -->
+<h2>🎮 Наши игры</h2>
+<!-- ========================================== -->
+<!-- ПАНЕЛЬ ПОИСКА И ФИЛЬТРОВ (ЛР11)            -->
+<!-- ========================================== -->
+<section class="filters-section">
+    <h2>🔍 Поиск и фильтры</h2>
+    <div class="filters-grid">
+        <div class="filter-group">
+            <label for="search-input">Поиск по названию или жанру:</label>
+            <input type="text" id="search-input" placeholder="Введите название или жанр...">
+        </div>
+        <div class="filter-group">
+            <label for="genre-filter">Жанр:</label>
+            <select id="genre-filter">
+                <option value="">Все жанры</option>
+                <option value="RPG">RPG</option>
+                <option value="Shooter">Shooter</option>
+                <option value="Многопользовательский спортивный симулятор">Многопользовательский спортивный симулятор</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="rating-filter">Мин. рейтинг:</label>
+            <input type="number" id="rating-filter" min="0" max="10" step="0.5" placeholder="0">
+        </div>
+        <div class="filter-group">
+            <label for="sort-filter">Сортировка:</label>
+            <select id="sort-filter">
+                <option value="default">По умолчанию</option>
+                <option value="rating-desc">Рейтинг ↓</option>
+                <option value="rating-asc">Рейтинг ↑</option>
+                <option value="title-asc">Название А-Я</option>
+                <option value="title-desc">Название Я-А</option>
+            </select>
+        </div>
+    </div>
+    <div class="filters-actions">
+        <button id="reset-filters" class="reset-btn">🔄 Сбросить фильтры</button>
+        <span id="results-count" class="results-count">Найдено: 0</span>
+    </div>
+</section>
+
+<div class="card-container" id="games-container">
+    <p id="loading">Загрузка игр...</p>
+</div>
+
+<!-- ========================================== -->
+<!-- ФОРМА ДОБАВЛЕНИЯ (скрыта для неавторизованных) -->
+<!-- ========================================== -->
+<div id="add-game-wrapper" style="display: none;">
+    <section class="add-game-section">
+        <h2>➕ Добавить новую игру</h2>
+        <form id="add-game-form">
+            <div class="form-group">
+                <label for="title">Название игры:</label>
+                <input type="text" id="title" placeholder="Например: Cyberpunk 2077" required>
+            </div>
+            <div class="form-group">
+                <label for="genre">Жанр:</label>
+                <input type="text" id="genre" placeholder="Например: RPG" required>
+            </div>
+            <div class="form-group">
+                <label for="rating">Рейтинг (0-10):</label>
+                <input type="number" id="rating" min="0" max="10" step="0.1" placeholder="9.5" required>
+            </div>
+            <div class="form-group">
+                <label for="imageUrl">Ссылка на картинку:</label>
+                <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
+            </div>
+            <button type="submit" class="submit-btn">Сохранить игру</button>
+        </form>
+    </section>
+</div>
+
+<!-- ========================================== -->
+<!-- ЛИДЕРБОРД (ТАБЛИЦА РЕКОРДОВ)               -->
+<!-- ========================================== -->
+<section class="leaderboard-section">
+    <h2>🏆 Таблица рекордов</h2>
+    <!-- Форма добавления рекорда -->
+    <form id="score-form" class="score-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="player-name">Имя игрока:</label>
+                <input type="text" id="player-name" placeholder="Ваше имя" required>
+            </div>
+            <div class="form-group">
+                <label for="player-score">Очки:</label>
+                <input type="number" id="player-score" placeholder="1000" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="game-title">Игра:</label>
+                <select id="game-title" required>
+                    <option value="">Выберите игру</option>
+                    <option value="Zenless Zone Zero">Zenless Zone Zero</option>
+                    <option value="Valorant">Valorant</option>
+                    <option value="Honkai Star Rail">Honkai Star Rail</option>
+                    <option value="Rematch">Rematch</option>
+                </select>
+            </div>
+            <button type="submit" class="score-btn">➕ Добавить</button>
+        </div>
+    </form>
+    <!-- Фильтр по игре -->
+    <div class="leaderboard-filter">
+        <label for="leaderboard-game-filter">Фильтр по игре:</label>
+        <select id="leaderboard-game-filter">
+            <option value="">Все игры</option>
+            <option value="Zenless Zone Zero">Zenless Zone Zero</option>
+            <option value="Valorant">Valorant</option>
+            <option value="Honkai Star Rail">Honkai Star Rail</option>
+            <option value="Rematch">Rematch</option>
+        </select>
+    </div>
+    <!-- Таблица рекордов -->
+    <div class="leaderboard-table-wrapper">
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Место</th>
+                    <th>Игрок</th>
+                    <th>Очки</th>
+                    <th>Игра</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <tr>
+                    <td colspan="4" style="text-align: center;">Загрузка...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- МОДАЛЬНОЕ ОКНО РЕДАКТИРОВАНИЯ (ЛР7)        -->
+<!-- ========================================== -->
+<div class="modal-overlay" id="edit-modal">
+    <div class="modal-window">
+        <h2>✏️ Редактировать игру</h2>
+        <form id="edit-form">
+            <input type="hidden" id="edit-id">
+            <div class="form-group">
+                <label for="edit-title">Название игры:</label>
+                <input type="text" id="edit-title" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-genre">Жанр:</label>
+                <input type="text" id="edit-genre" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-rating">Рейтинг (0-10):</label>
+                <input type="number" id="edit-rating" min="0" max="10" step="0.1" required>
+            </div>
+            <div class="form-group">
+                <label for="edit-imageUrl">Ссылка на картинку:</label>
+                <input type="url" id="edit-imageUrl">
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="cancel-edit" class="cancel-btn">Отмена</button>
+                <button type="submit" class="save-btn">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- МОДАЛЬНОЕ ОКНО АУТЕНТИФИКАЦИИ (ЛР8)        -->
+<!-- ========================================== -->
+<div class="auth-modal" id="auth-modal">
+    <div class="auth-modal-window">
+        <button class="modal-close" id="modal-close">✕</button>
+        <h2 class="auth-title">🔐 Добро пожаловать!</h2>
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Вход</button>
+            <button class="auth-tab" data-tab="register">Регистрация</button>
+        </div>
+        <!-- Форма входа -->
+        <form id="login-form" class="auth-form active">
+            <div class="form-group">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" placeholder="example@mail.ru" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Пароль:</label>
+                <input type="password" id="login-password" placeholder="••••••" required>
+            </div>
+            <button type="submit" class="auth-btn">Войти</button>
+        </form>
+        <!-- Форма регистрации -->
+        <form id="register-form" class="auth-form">
+            <div class="form-group">
+                <label for="register-name">Имя:</label>
+                <input type="text" id="register-name" placeholder="Ваше имя" required>
+            </div>
+            <div class="form-group">
+                <label for="register-email">Email:</label>
+                <input type="email" id="register-email" placeholder="example@mail.ru" required>
+            </div>
+            <div class="form-group">
+                <label for="register-password">Пароль (мин. 6 символов):</label>
+                <input type="password" id="register-password" placeholder="••••••" minlength="6" required>
+            </div>
+            <button type="submit" class="auth-btn">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ПОДКЛЮЧАЕМ JAVASCRIPT                        -->
+<!-- ============================================ -->
+<script src="js/script.js"></script>
+
+<!-- ============================================ -->
+<!-- ПОДКЛЮЧАЕМ FIREBASE                          -->
+<!-- ============================================ -->
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js';
+    import { getAuth } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+
+    // СВОЙ КОНФИГ
+    const firebaseConfig = {
+    apiKey: "AIzaSyAtxQb9lQWUDA4wMYMR_6XDGAzI-LwFepI",
+    authDomain: "vstayz-project.firebaseapp.com",
+    projectId: "vstayz-project",
+    storageBucket: "vstayz-project.firebasestorage.app",
+    messagingSenderId: "262063821256",
+    appId: "1:262063821256:web:2418b057b14a6f0f9430fd"
+  };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);          // ← ДОБАВИЛИ
+    const analytics = getAnalytics(app);
+
+    console.log('✅ Firebase подключен!');
+    console.log('📊 Project ID:', firebaseConfig.projectId);
+    console.log('🔥 Firestore готов!');
+    console.log('🔐 Auth готов!');
+
+    window.firebaseConfig = firebaseConfig;
+    window.db = db;
+    window.auth = auth;                 // ← ДОБАВИЛИ
+    window.firebaseReady = true;
+    document.dispatchEvent(new Event('firebase-ready'));
+</script>
+
+</body>
+</html>
